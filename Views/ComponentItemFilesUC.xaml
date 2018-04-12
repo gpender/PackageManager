@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="PackageManager.Views.ComponentItemFilesUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignWidth="900">
+    <GroupBox Header="Files" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListView ItemsSource="{Binding PackageComponentFiles}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path=Path}" Width="400"/>
+                            <GridViewColumn Header="Version" DisplayMemberBinding="{Binding Path=Version}" Width="100"/>
+                            <GridViewColumn Header="TargetFolder" DisplayMemberBinding="{Binding Path=TargetFolder}" Width="300"/>
+                            <GridViewColumn Header="Delete" Width="60">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Height="20" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.DeleteFileCommand}" 
+                                                CommandParameter="{Binding}" Content="Delete"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <DockPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0,5">
+                <Button Height="20" Width="100" Margin="5,0" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AddFileCommand}" CommandParameter="FolderHierarchy" Content="Add Folder (and files)"/>
+            </DockPanel>
+        </Grid>
+    </GroupBox>
+</UserControl>

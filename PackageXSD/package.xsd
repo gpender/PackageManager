@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Package">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Strings">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="String">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Neutral" type="xs:string" />
+                    <xs:element minOccurs="0" maxOccurs="unbounded" name="Localized">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="Culture" type="xs:string" use="required" />
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="Id" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="General">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" type="xs:string" />
+              <xs:element name="Version" type="xs:string" />
+              <xs:element name="Name" type="xs:string" />
+              <xs:element name="Vendor" type="xs:string" />
+              <xs:element name="Copyright" type="xs:string" />
+              <xs:element name="Description" type="xs:string" />
+              <xs:element name="Icon" type="xs:string" />
+              <xs:element name="HTML" type="xs:string" />
+              <xs:element name="LicenseAgreement" type="xs:string" />
+              <xs:element name="RequiredInstallerVersion" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TargetDirectoryDefinitions" type="xs:string" />
+        <xs:element name="Components">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Component">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="General">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Id" type="xs:unsignedByte" />
+                          <xs:element name="Name" type="xs:string" />
+                          <xs:element name="Description" type="xs:string" />
+                          <xs:element name="Selectable" type="xs:boolean" />
+                          <xs:element name="SelectedByDefault" type="xs:boolean" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Items">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="DeviceDescription">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Path" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="File">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="TargetFolder" type="xs:string" />
+                                <xs:element name="Path" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="Library">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Path" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="PlugIn">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Path" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="OnlineHelpFile">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Culture" type="xs:string" />
+                                <xs:element name="Path" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="ProfileChange">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="PlugIn" type="xs:string" />
+                                <xs:element name="Version" type="xs:string" />
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element maxOccurs="unbounded" name="AddMenuCommand">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Command" type="xs:string" />
+                                <xs:element name="InsertionPath" type="xs:string" />
+                                <xs:element name="InsertionPosition">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Where" type="xs:string" />
+                                      <xs:element minOccurs="0" name="Command" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,30 @@
+﻿<Window x:Class="PackageManager.Views.NewAddCommand"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NewLibrary" Height="200" Width="500">
+    <Grid x:Name="LayoutRoot" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="59*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="5">Command</TextBlock>
+        <TextBox Height="26" Text="{Binding Command}" Grid.Column="1" Margin="0"/>
+        <TextBlock Margin="5" Grid.Row="2">Insertion Path</TextBlock>
+        <TextBox Height="26" Text="{Binding InsertionPath}" Grid.Row="2" Grid.Column="1" Margin="0"/>
+        <TextBlock Margin="5" Grid.Row="3">Insertion Pos</TextBlock>
+        <TextBox Height="26" Text="{Binding InsertionPosition.Where}" Grid.Row="3" Grid.Column="1" Margin="0"/>
+        <TextBlock Margin="5" Grid.Row="4">Insertion Pos Command</TextBlock>
+        <TextBox Height="26" Text="{Binding InsertionPosition.Command}" Grid.Row="4" Grid.Column="1" Margin="0"/>
+        <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,0,0" Grid.Row="6" Grid.Column="1" />
+        <Button x:Name="OKButton" Content="OK" Click="OKButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,79,0" Grid.Row="6" Grid.Column="1" />
+    </Grid>
+</Window>

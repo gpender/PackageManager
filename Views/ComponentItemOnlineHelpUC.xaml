@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="PackageManager.Views.ComponentItemOnlineHelpUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignWidth="900">
+    <GroupBox Header="Online Help Files" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListView ItemsSource="{Binding PackageComponentOnlineHelp}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn Header="Culture" DisplayMemberBinding="{Binding Path=Culture}" Width="100"/>
+                            <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path=Path}" Width="400"/>
+                            <GridViewColumn Header="Delete" Width="160">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Height="20" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.DeleteHelpFileCommand}" 
+                                                CommandParameter="{Binding}" Content="Delete"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Grid.Row="1" HorizontalAlignment="Right" Margin="0,5" Height="20" Width="100" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AddHelpFileCommand}" Content="Add HelpFile"/>
+        </Grid>
+    </GroupBox>
+</UserControl>

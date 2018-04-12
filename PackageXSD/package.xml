@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Package>
+  <Strings>
+    <String Id="GeneralName">
+      <Neutral>Parker Drive Developer plugin for CoDeSys V3.5 SP6</Neutral>
+    </String>
+    <String Id="GeneralCopyright">
+      <Neutral>Copyright (c) 2013 by Parker Hannifin Manuacturing Ltd. All rights reserved.</Neutral>
+    </String>
+    <String Id="GeneralDescription">
+      <Neutral>This package contains the Parker Drive Developer as a plugin for CoDeSys</Neutral>
+    </String>
+    <String Id="GeneralLicenseAgreement">
+      <Neutral>Html/LicenseAgreement_en.htm</Neutral>
+      <Localized Culture="de">Html/LicenseAgreement_de.htm</Localized>
+      <Localized Culture="fr">Html/LicenseAgreement_fr.htm</Localized>
+    </String>
+    <String Id="PDDPluginName">
+      <Neutral>PDD-PlugIn</Neutral>
+    </String>
+    <String Id="PDDPluginDescription">
+      <Neutral>Installs the PDD-PlugIn</Neutral>
+    </String>
+    <String Id="FileMenu">
+      <Neutral>File</Neutral>
+    </String>
+    <String Id="HelpMenu">
+      <Neutral>Help</Neutral>
+    </String>
+  </Strings>
+  <General>
+    <Id>{CC5E11BB-0290-4D1D-B05B-B58A14162A8B}</Id>
+    <Version>1.7.47.2</Version>
+    <Name>$GeneralName</Name>
+    <Vendor>Parker Hannifin Manuacturing Ltd</Vendor>
+    <Copyright>$GeneralCopyright</Copyright>
+    <Description>$GeneralDescription</Description>
+    <Icon>Icons/PC-Black.ico</Icon>
+    <HTML>Html/Index.htm</HTML>
+    <LicenseAgreement>$GeneralLicenseAgreement</LicenseAgreement>
+    <RequiredInstallerVersion>3.5.6.0</RequiredInstallerVersion>
+  </General>
+  <TargetDirectoryDefinitions>
+  </TargetDirectoryDefinitions>
+  <Components>
+    <Component>
+      <General>
+        <Id>1</Id>
+        <Name>$PDDPluginName</Name>
+        <Description>$PDDPluginDescription</Description>
+        <Selectable>false</Selectable>
+        <SelectedByDefault>true</SelectedByDefault>
+      </General>
+      <Items>
+	  
+	    <DeviceDescription>   
+      	  <Path>Device\device_1_1_5.xml</Path>
+        </DeviceDescription>
+	    <DeviceDescription>   
+      	  <Path>Device\device_1_1_6.xml</Path>
+        </DeviceDescription>
+	    <DeviceDescription>   
+      	  <Path>Device\device_1_2_1.xml</Path>
+        </DeviceDescription>
+	<DeviceDescription>   
+      	  <Path>Device\device_1_3_1_2.xml</Path>
+        </DeviceDescription>
+		
+		<!-- Interfaces -->
+        <File>
+          <TargetFolder>%AP_COMMON%</TargetFolder>
+          <Path>Install\+Parker.AP.Common\+Parker.AP.Common.dll</Path>
+        </File>
+		
+		<!-- Templates -->
+        <File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_1_5.project</Path>
+        </File>
+		<File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_1_5.template</Path>
+        </File>
+        <File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_1_6.project</Path>
+        </File>
+		<File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_1_6.template</Path>
+        </File>
+        <File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_2_1.project</Path>
+        </File>
+		<File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_2_1.template</Path>
+        </File>      
+	<File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_3_1_2.project</Path>
+        </File>       
+	<File>
+          <TargetFolder>%AP_ROOT%\Templates\Parker</TargetFolder>
+          <Path>Template\AC30BasicSpeed_1_3_1_2.template</Path>
+        </File>   
+		
+		<Library>
+          <Path>Libraries\AC30 Parameter Access\1.1.6.0\AC30 Parameter Access.library</Path>
+		</Library>  
+        <Library>
+          <Path>Libraries\AC30 Soft Menus\1.1.2.0\AC30 Soft Menus.library</Path>
+		</Library> 
+		<Library>
+          <Path>Libraries\AC30 Soft Parameters\1.1.4.0\AC30 Soft Parameters.library</Path>
+		</Library> 
+		<Library>
+          <Path>Libraries\AC30 Standard\1.1.6.0\AC30 Standard.library</Path>
+		</Library> 
+	<Library>
+		<Path>Libraries\AC30 Standard\1.2.1.0\AC30 Standard.library</Path>
+	</Library> 
+	<Library>
+		<Path>Libraries\AC30 Standard\1.3.1.0\AC30 Standard.library</Path>
+	</Library> 
+	<Library>
+		<Path>Libraries\AC30 Standard\1.3.1.1\AC30 Standard.library</Path>
+	</Library> 
+		
+		
+		<PlugIn>
+          <Path>Install\Parker.AP.Common.Plugin\Parker.AP.Common.Plugin.dll</Path>
+        </PlugIn>
+        <PlugIn>
+          <Path>Install\DriveQuickTool\Parker.AP.Inverter.ParkerDriveQuick.plugin.dll</Path>
+        </PlugIn>
+		<PlugIn>
+          <Path>Install\Parker.AP.Inverter.AC30Common\Parker.AP.Inverter.AC30Common.plugin.dll</Path>
+        </PlugIn>
+		<PlugIn>
+          <Path>Install\AC30Device.plugin\Parker.AP.AC30Device.plugin.dll</Path>
+        </PlugIn>
+		<PlugIn>
+          <Path>Install\ScopeChart.plugin\Parker.AP.ScopeChart.plugin.dll</Path>
+        </PlugIn>
+		<PlugIn>
+          <Path>Install\AC30Motor.plugin\Parker.AP.AC30Motor.plugin.dll</Path>
+        </PlugIn>		
+		
+	<OnlineHelpFile>
+          <Culture>en</Culture>
+          <Path>Help\en\AC30.chm</Path>
+       	</OnlineHelpFile>
+	<OnlineHelpFile>
+          <Culture>de</Culture>
+          <Path>Help\de\AC30.chm</Path>
+       	</OnlineHelpFile>
+	<OnlineHelpFile>
+          <Culture>fr</Culture>
+          <Path>Help\fr\AC30.chm</Path>
+       	</OnlineHelpFile>
+	<OnlineHelpFile>
+          <Culture>es</Culture>
+          <Path>Help\es\AC30.chm</Path>
+       	</OnlineHelpFile>
+	<OnlineHelpFile>
+          <Culture>it</Culture>
+          <Path>Help\it\AC30.chm</Path>
+       	</OnlineHelpFile>
+	
+		<!-- Install\Parker.AP.Common.Plugin\Parker.AP.Common.Plugin.dll -->
+		<ProfileChange>
+		  <PlugIn>{E217550C-7099-423A-8D7F-AACD99E45257}</PlugIn>
+		  <Version>1.7.47.1</Version>
+		</ProfileChange>
+		
+		<!-- Install\DriveQuickTool\Parker.AP.Inverter.ParkerDriveQuick.plugin.dll -->
+		<ProfileChange>
+		  <PlugIn>{37934B95-2361-4DD2-B0B8-B21552D57497}</PlugIn>
+		  <Version>1.10.47.1</Version>
+		</ProfileChange>
+		
+		<!-- Install\Parker.AP.Inverter.AC30Common\Parker.AP.Inverter.AC30Common.plugin.dll -->
+		<ProfileChange>
+		  <PlugIn>{99D0A595-C749-4555-9590-08F370D7C290}</PlugIn>
+		  <Version>1.7.47.1</Version>
+		</ProfileChange>
+		
+		<!-- Install\AC30Device.plugin\Parker.AP.AC30Device.plugin.dll -->
+		<ProfileChange>
+		  <PlugIn>{44DD7712-82E0-4185-AB1F-C294AFE826FD}</PlugIn>
+		  <Version>1.7.47.1</Version>
+		</ProfileChange>		
+				
+		<!-- Install\ScopeChart.plugin\Parker.AP.ScopeChart.plugin.dll -->
+		<ProfileChange>
+		  <PlugIn>{0B01D855-9C87-4E9C-8512-4858414CFA09}</PlugIn>
+		  <Version>1.7.47.1</Version>
+		</ProfileChange>
+		
+		<!-- Install\AC30Motor.plugin\Parker.AP.AC30Motor.plugin.dll -->
+		<ProfileChange>
+		  <PlugIn>{b6325904-2258-4ca3-9512-a4e253940589}</PlugIn>
+		  <Version>1.7.47.1</Version>
+		</ProfileChange>
+		
+        <!--DQT Command-->
+        <AddMenuCommand>
+          <Command>{51D03C22-1299-401E-B05C-B2CB7EA9554C}</Command>
+          <InsertionPath>$FileMenu</InsertionPath>
+          <!--After File open-->
+          <InsertionPosition>
+            <Where>First</Where>
+          </InsertionPosition>
+        </AddMenuCommand>
+        
+        <!--Parker Service Command-->
+        <AddMenuCommand>
+          <Command>{10E000A4-43AD-4492-A426-90E867DDC452}</Command>
+          <InsertionPath>$HelpMenu</InsertionPath>
+          <!--After Help Index open-->
+          <InsertionPosition>
+            <Where>After</Where>
+            <Command>{fd5aed6e-7f03-49f0-90bb-b6b623bfbc13}</Command>
+          </InsertionPosition>
+        </AddMenuCommand>
+      </Items>
+      <Dependencies>
+        <MinimumPlugInVersion>
+          <PlugIn>2a785a6d-f546-47d1-9107-6bcaa0f232cf</PlugIn>
+          <Version>3.5.6.0</Version>
+          <Annotation>Check for DeviceObject Plugin 3.5.6.0 minimum</Annotation>
+        </MinimumPlugInVersion>
+      </Dependencies>
+    </Component>
+  </Components>
+</Package>
