@@ -29,10 +29,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>https://raw.githubusercontent.com/gpender/PackageManager/master/PackageManager/publish/</InstallUrl>
+    <InstallUrl>https://raw.githubusercontent.com/gpender/PackageManager/master/Publish/publish.htm/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>64</ApplicationRevision>
+    <ApplicationRevision>65</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -301,6 +301,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="Publish\publish.htm" />
+    <Content Include="Publish\setup.exe" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -320,6 +322,26 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\.gitattributes.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\.gitignore.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\Core.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\Ionic.Zip.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\lib\Ionic.Zip.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\PackageManager.application" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\PackageManager.exe.config.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\PackageManager.exe.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\PackageManager.exe.manifest" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\PackageXSD\template.xml.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\System.Windows.Controls.Input.Toolkit.Design.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\System.Windows.Controls.Input.Toolkit.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\System.Windows.Controls.Input.Toolkit.VisualStudio.Design.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\System.Windows.Controls.Layout.Toolkit.Design.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\System.Windows.Controls.Layout.Toolkit.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\System.Windows.Controls.Layout.Toolkit.VisualStudio.Design.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\WPFToolkit.Design.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\WPFToolkit.dll.deploy" />
+    <None Include="Publish\Application Files\PackageManager_1_0_0_64\WPFToolkit.VisualStudio.Design.dll.deploy" />
+    <None Include="Publish\PackageManager.application" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="PackageXSD\package.xml" />
