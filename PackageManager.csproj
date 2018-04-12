@@ -19,7 +19,7 @@
     <SccProvider>SAK</SccProvider>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\SSD365W01\wwwroot\rnd\packagemanager\</PublishUrl>
+    <PublishUrl>C:\Users\gp090365\Documents\GitHub\PackageManager\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -29,7 +29,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://ssd365w01/rnd/packagemanager/</InstallUrl>
+    <InstallUrl>https://raw.githubusercontent.com/gpender/PackageManager/master/PackageManager/publish/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>64</ApplicationRevision>
@@ -306,7 +306,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="PackageManager_TemporaryKey.pfx" />
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
     <Content Include="PackageXSD\template.xml" />
     <None Include="PackageXSD\package.xsd">
       <SubType>Designer</SubType>
