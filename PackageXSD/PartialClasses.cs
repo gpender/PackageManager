@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PackageManager.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,8 +7,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 
-
-public partial class PackageComponentsComponentItemsDeviceDescription
+public partial class PackageComponentsComponentItemsDeviceDescription : ViewModelBase
 {
     private string version = string.Empty;
     private string id = string.Empty;
@@ -31,7 +31,10 @@ public partial class PackageComponentsComponentItemsDeviceDescription
     public string Version
     {
         get { return version; }
-        set { version = value; }
+        set {
+            version = value;
+            OnPropertyChanged("Version");
+        }
     }
 }
 

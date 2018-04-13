@@ -38,6 +38,11 @@ namespace PackageManager.Model
             set { package = value; }
         }
 
+        public string IconPath
+        {
+            get { return tmpPath + @"\" + package.General.Icon.Replace(@"/",@"\"); }
+        }
+
         public CodesysPackageManager()
         {
             if (ApplicationDeployment.IsNetworkDeployed)
@@ -48,16 +53,45 @@ namespace PackageManager.Model
             packageFile = tmpPath + @"\parker.package";
             packageManifest = tmpPath + @"\package.manifest";
             SetupTempFolders();
+            ReadPackage(true);
         }
 
-        public void ReadPackage()
+        public void ReadPackage(bool newEmptyPackage = false)
         {
             SetAttributesToNormal(commonPath);
             DependencyConflicts.Clear();
             AssemblyNameRegister.Clear();
-            if (ReadExistingPackageIntoTempLocation())
+            if (newEmptyPackage)
             {
+                using (Stream stream2 = Assembly.GetExecutingAssembly().GetManifestResourceStream("PackageManager.Resources.Files.emptyPackage.manifest"))
+                {
+                    if (stream2 != null)
+                    {
+                        using (FileStream destination = new FileStream(tmpPath + @"\package.manifest", FileMode.Create, FileAccess.ReadWrite))
+                        {
+                            stream2.CopyTo(destination);
+                        }
+                    }
+                }
+                using (Stream stream2 = Assembly.GetExecutingAssembly().GetManifestResourceStream("PackageManager.Resources.Images.parker.ico"))
+                {
+                    if (stream2 != null)
+                    {
+                        using (FileStream destination = new FileStream(tmpPath + @"\Icon\parker.ico", FileMode.Create, FileAccess.ReadWrite))
+                        {
+                            stream2.CopyTo(destination);
+                        }
+                    }
+                }
                 PopulatePackageObject();
+                CreatePackageGuid(false);
+            }
+            else
+            {
+                if (ReadExistingPackageIntoTempLocation())
+                {
+                    PopulatePackageObject();
+                }
             }
             SetAttributesToNormal(commonPath);
         }
@@ -91,6 +125,8 @@ namespace PackageManager.Model
             //        }
             //    }
             //}
+            package.General.Icon = package.General.Icon == string.Empty ? null : package.General.Icon;
+            package.General.HTML = package.General.HTML == string.Empty ? null : package.General.HTML;
             XElement xelement = package.Serialize();
             xelement.Save(packageManifest);
             ZipUpPackageAndFiles();
@@ -124,10 +160,11 @@ namespace PackageManager.Model
             }
         }
 
-        private void PopulatePackageObject()
+        private void PopulatePackageObject(string starterManifest = null)
         {
-            string packageManifest = tmpPath + @"\package.manifest";
-            package = SerializationExtensions.Deserialize<Package>(XElement.Load(packageManifest));
+            packageManifest = tmpPath + @"\package.manifest";
+            starterManifest = starterManifest == null ? packageManifest : starterManifest;
+            package = SerializationExtensions.Deserialize<Package>(XElement.Load(starterManifest));
             if (package.Components.Component.Items.PlugIn != null)
             {
                 foreach (var plugin in package.Components.Component.Items.PlugIn)
@@ -148,6 +185,13 @@ namespace PackageManager.Model
                     string filePath = tmpPath + @"\" + f.Path;
                     f.IsInterface = f.Path.ToLowerInvariant().EndsWith(".dll");
                     f.Version = GetFileVersion(filePath);
+                }
+            }
+            if (package.Components.Component.Items.Folder != null)
+            {
+                foreach (var f in package.Components.Component.Items.Folder)
+                {
+                    string filePath = tmpPath + @"\" + f.Path;
                 }
             }
 
@@ -207,6 +251,20 @@ namespace PackageManager.Model
             }
         }
 
+        internal void CreatePackageGuid(bool confirm=true)
+        {
+            if (confirm)
+            {
+                ConfirmDialogCW confirmDialog = new ConfirmDialogCW("Create New GUID", "Are you sure you need a new GUID for this package?");
+                confirmDialog.ShowDialog();
+                if (!confirmDialog.DialogResult.Value)
+                {
+                    return;
+                }
+            }
+            Package.General.Id = Guid.NewGuid().ToString();
+        }
+
         private bool ReadExistingPackageIntoTempLocation()
         {
             string existingZipFile = null;
@@ -249,7 +307,7 @@ namespace PackageManager.Model
                     return true;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show(existingZipFile + " " + e.Message);
             }
@@ -264,6 +322,8 @@ namespace PackageManager.Model
                 {
                     Directory.Delete(tmpPath, true);
                 }
+                Directory.CreateDirectory(tmpPath);
+                Directory.CreateDirectory(tmpPath + @"\Icon");
             }
             catch { }
             try
@@ -272,6 +332,7 @@ namespace PackageManager.Model
                 {
                     Directory.CreateDirectory(commonPath);
                     Directory.CreateDirectory(tmpPath);
+                    Directory.CreateDirectory(tmpPath + @"\Icon");
                 }
             }
             catch { }
@@ -305,38 +366,38 @@ namespace PackageManager.Model
                 Directory.CreateDirectory(deviceFolder);
                 File.Copy(fileInfo.FullName, deviceFolder + fileInfo.Name, true);
                 PackageComponentsComponentItemsDeviceDescription itemDevDesc = new PackageComponentsComponentItemsDeviceDescription();
-                itemDevDesc.Path =  @"Device\" + fileInfo.Name;
+                itemDevDesc.Path = @"Device\" + fileInfo.Name;
                 DeviceDescription devDesc = SerializationExtensions.Deserialize<DeviceDescription>(XElement.Load(deviceFolder + fileInfo.Name));
                 itemDevDesc.Version = devDesc.Device.DeviceIdentification.Version;
                 itemDevDesc.DeviceId = devDesc.Device.DeviceIdentification.Id;
                 itemDevDesc.DeviceType = devDesc.Device.DeviceIdentification.Type.ToString();
-                AddLocalFiles(devDesc,fileInfo.DirectoryName + @"\", deviceFolder);
+                AddLocalFiles(devDesc, fileInfo.DirectoryName + @"\", deviceFolder);
 
                 List<PackageComponentsComponentItemsDeviceDescription> deviceList = new List<PackageComponentsComponentItemsDeviceDescription>();
                 if (Package.Components.Component.Items.DeviceDescription != null)
                 {
-                    deviceList= Package.Components.Component.Items.DeviceDescription.ToList();
+                    deviceList = Package.Components.Component.Items.DeviceDescription.ToList();
                 }
                 deviceList.Add(itemDevDesc);
                 Package.Components.Component.Items.DeviceDescription = deviceList.ToArray();
             }
         }
 
-        private void AddLocalFiles(DeviceDescription devDesc,string sourceFolder,string destinationFolder)
+        private void AddLocalFiles(DeviceDescription devDesc, string sourceFolder, string destinationFolder)
         {
-            if(devDesc.Files !=null && devDesc.Files.Language !=null && devDesc.Files.Language.Count() > 0)
+            if (devDesc.Files != null && devDesc.Files.Language != null && devDesc.Files.Language.Count() > 0)
             {
                 try
                 {
-                    foreach(var f in devDesc.Files.Language[0].File)
+                    foreach (var f in devDesc.Files.Language[0].File)
                     {
-                        if(File.Exists(sourceFolder + f.Item))
+                        if (File.Exists(sourceFolder + f.Item))
                         {
                             File.Copy(sourceFolder + f.Item, destinationFolder + f.Item, true);
                         }
                     }
                 }
-                catch{ }
+                catch { }
             }
         }
 
@@ -386,10 +447,54 @@ namespace PackageManager.Model
                 {
                     File.Delete(fileInfo.FullName);
                 }
-                if(fileInfo.Directory.EnumerateFiles().Count() == 0 && fileInfo.Directory.EnumerateDirectories().Count() == 0)
+                if (fileInfo.Directory.EnumerateFiles().Count() == 0 && fileInfo.Directory.EnumerateDirectories().Count() == 0)
                 {
                     fileInfo.Directory.Delete();
                 }
+            }
+        }
+
+        internal void EditFolder(PackageComponentsComponentItemsFolder folder)
+        {
+            NewFolder newFolder = new NewFolder();
+            FolderProxy folderProxy = new FolderProxy(folder);
+            newFolder.DataContext = folderProxy;
+            bool? r = newFolder.ShowDialog();
+            if (r.HasValue)
+            {
+                if (r.Value)
+                {
+                    folder.TargetFolder = folderProxy.TargetFolder;
+                }
+            }
+        }
+
+        internal void RemoveFolder(PackageComponentsComponentItemsFolder folder)
+        {
+            if (Package.Components.Component.Items.Folder != null)
+            {
+                List<PackageComponentsComponentItemsFolder> folderList = Package.Components.Component.Items.Folder.ToList();
+                folderList.Remove(folder);
+                Package.Components.Component.Items.Folder = folderList.ToArray();
+            }
+            Directory.Delete(tmpPath + @"\" + folder.Path, true);
+        }
+
+        internal void EditIcon()
+        {
+            string fileName = null;
+            FileInfo fileInfo = null;
+            System.Windows.Forms.OpenFileDialog loadDialog = new System.Windows.Forms.OpenFileDialog();
+            loadDialog.Filter = "Icon .ico Files (.ico)|*.ico|All Files (*.*)|*.*";
+            if (loadDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                fileName = loadDialog.FileName;
+                fileInfo = new FileInfo(fileName);
+                string path = @"Icon\";
+                Directory.CreateDirectory(tmpPath + @"\" + path);
+                path += fileInfo.Name;
+                File.Copy(fileInfo.FullName, tmpPath + @"\" + path, true);
+                Package.General.Icon = path;
             }
         }
 
@@ -399,7 +504,34 @@ namespace PackageManager.Model
             Template,
             FolderHierarchy
         }
+        internal void AddFolder()
+        {
+            NewFolder newFolder = new NewFolder();
+            FolderProxy folderProxy = new FolderProxy();
+            newFolder.DataContext = folderProxy;
+            bool? r = newFolder.ShowDialog();
+            if (r.HasValue)
+            {
+                if (r.Value)
+                {
+                    DirectoryInfo sourceDirectoryInfo = new DirectoryInfo(folderProxy.SourceFolder);
 
+                    CopyDirectory(sourceDirectoryInfo.FullName, tmpPath + @"\" + sourceDirectoryInfo.Name);
+                    DirectoryInfo destinationDirectoryInfo = new DirectoryInfo(tmpPath + @"\" + sourceDirectoryInfo.Name);
+                    List<PackageComponentsComponentItemsFolder> folderList = new List<PackageComponentsComponentItemsFolder>();
+                    if (Package.Components.Component.Items.Folder != null)
+                    {
+                        folderList = Package.Components.Component.Items.Folder.ToList();
+                    }
+                    PackageComponentsComponentItemsFolder folder = new PackageComponentsComponentItemsFolder();
+                    folder.TargetFolder = folderProxy.TargetFolder;
+                    folder.Path = destinationDirectoryInfo.Name;
+                    folderList.Insert(0, folder);
+
+                    Package.Components.Component.Items.Folder = folderList.ToArray();
+                }
+            }
+        }
         internal void AddFile(FileType fileType)
         {
 
@@ -421,7 +553,7 @@ namespace PackageManager.Model
                         fileList = Package.Components.Component.Items.File.ToList();
                     }
                     PackageComponentsComponentItemsFile file;// = new PackageComponentsComponentItemsFile();
-                    foreach (var f in destinationDirectoryInfo.EnumerateFiles("*",SearchOption.AllDirectories))
+                    foreach (var f in destinationDirectoryInfo.EnumerateFiles("*", SearchOption.AllDirectories))
                     {
                         file = new PackageComponentsComponentItemsFile();
                         file.FileType = fileType;
@@ -462,7 +594,7 @@ namespace PackageManager.Model
                     }
                     //path += @"\" + fileInfo.Name;
                     path += fileInfo.Name;
-                    File.Copy(fileInfo.FullName, tmpPath + @"\" + path,true);
+                    File.Copy(fileInfo.FullName, tmpPath + @"\" + path, true);
                     PackageComponentsComponentItemsFile file = new PackageComponentsComponentItemsFile();
                     file.FileType = fileType;
                     file.TargetFolder = @"%AP_COMMON%";
@@ -470,7 +602,7 @@ namespace PackageManager.Model
                     file.IsInterface = true;
                     file.Version = GetFileVersion(tmpPath + @"\" + path);
                     List<PackageComponentsComponentItemsFile> fileList = new List<PackageComponentsComponentItemsFile>();
-                    if(Package.Components.Component.Items.File != null)
+                    if (Package.Components.Component.Items.File != null)
                     {
                         fileList = Package.Components.Component.Items.File.ToList();
                     }
@@ -568,7 +700,7 @@ namespace PackageManager.Model
                             Directory.CreateDirectory(tmpPath + @"\" + path);
                         }
                         path += @"\" + fileInfo.Name;
-                        File.Copy(fileInfo.FullName, tmpPath + @"\" + path,true);
+                        File.Copy(fileInfo.FullName, tmpPath + @"\" + path, true);
                         PackageComponentsComponentItemsLibrary library = new PackageComponentsComponentItemsLibrary();
                         library.Path = path;
                         List<PackageComponentsComponentItemsLibrary> libraryList = new List<PackageComponentsComponentItemsLibrary>();
@@ -743,7 +875,7 @@ namespace PackageManager.Model
             foreach (string file in Directory.GetFiles(sourcePath))
             {
                 string dest = Path.Combine(destPath, Path.GetFileName(file));
-                File.Copy(file, dest,true);
+                File.Copy(file, dest, true);
             }
 
             foreach (string folder in Directory.GetDirectories(sourcePath))
@@ -783,7 +915,7 @@ namespace PackageManager.Model
                             Directory.CreateDirectory(tmpPath + @"\" + path);
                         }
                         path += @"\" + fileInfo.Name;
-                        File.Copy(fileInfo.FullName, tmpPath + @"\" + path,true);
+                        File.Copy(fileInfo.FullName, tmpPath + @"\" + path, true);
                         PackageComponentsComponentItemsOnlineHelpFile helpFile = new PackageComponentsComponentItemsOnlineHelpFile();
                         helpFile.Culture = helpFileProxy.Culture;
                         helpFile.Path = path;
@@ -877,53 +1009,61 @@ namespace PackageManager.Model
 
             sb.AppendLine("Interfaces");
             sb.AppendLine(String.Format("{0,-100}", "Name") + String.Format("{0,-40}", "Version"));
-            foreach (var p in this.Package.Components.Component.Items.File)
+            if (Package.Components.Component.Items.File != null)
             {
-                if (p.IsInterface)
+                foreach (var p in this.Package.Components.Component.Items.File)
                 {
-                    string interfaceName = p.Path;
-                    if (interfaceName.Contains('\\'))
+                    if (p.IsInterface)
+                    {
+                        string interfaceName = p.Path;
+                        if (interfaceName.Contains('\\'))
+                        {
+                            string[] tmp = p.Path.Split(new char[] { '\\' });
+                            interfaceName = tmp[tmp.Length - 1];
+                        }
+                        sb.AppendLine(String.Format("{0,-60}", interfaceName) + String.Format("{0,-40}", p.Version));
+                    }
+                }
+
+                sb.AppendLine();
+
+                sb.AppendLine("Other Files");
+                sb.AppendLine(String.Format("{0,-100}", "Name"));// + String.Format("{0,-40}", "Plugin Guid") + "Version");
+                foreach (var p in this.Package.Components.Component.Items.File)
+                {
+                    if (!p.IsInterface)
+                    {
+                        string fileName = p.Path;
+                        if (fileName.Contains('\\'))
+                        {
+                            string[] tmp = p.Path.Split(new char[] { '\\' });
+                            fileName = tmp[tmp.Length - 1];
+                        }
+                        sb.AppendLine(String.Format("{0,-60}", fileName));
+                    }
+                }
+                sb.AppendLine();
+            }
+
+            if(Package.Components.Component.Items.Library != null)
+            {
+                sb.AppendLine("Libraries");
+                sb.AppendLine(String.Format("{0,-100}", "Library Name"));// + String.Format("{0,-40}", "Plugin Guid") + "Version");
+                foreach (var p in this.Package.Components.Component.Items.Library)
+                {
+                    string libraryName = p.Path;
+                    string libraryRevision = "";
+                    if (libraryName.Contains('\\'))
                     {
                         string[] tmp = p.Path.Split(new char[] { '\\' });
-                        interfaceName = tmp[tmp.Length - 1];
+                        libraryName = tmp[tmp.Length - 1];
+                        libraryRevision = tmp[tmp.Length - 2];
                     }
-                    sb.AppendLine(String.Format("{0,-60}", interfaceName) + String.Format("{0,-40}", p.Version));
+                    sb.AppendLine(String.Format("{0,-60}", libraryName) + String.Format("{0,-40}", libraryRevision));
                 }
+                sb.AppendLine();
             }
-            sb.AppendLine();
 
-            sb.AppendLine("Other Files");
-            sb.AppendLine(String.Format("{0,-100}", "Name"));// + String.Format("{0,-40}", "Plugin Guid") + "Version");
-            foreach (var p in this.Package.Components.Component.Items.File)
-            {
-                if (!p.IsInterface)
-                {
-                    string fileName = p.Path;
-                    if (fileName.Contains('\\'))
-                    {
-                        string[] tmp = p.Path.Split(new char[] { '\\' });
-                        fileName = tmp[tmp.Length - 1];
-                    }
-                    sb.AppendLine(String.Format("{0,-60}", fileName));
-                }
-            }
-            sb.AppendLine();
-
-            sb.AppendLine("Libraries");
-            sb.AppendLine(String.Format("{0,-100}", "Library Name"));// + String.Format("{0,-40}", "Plugin Guid") + "Version");
-            foreach (var p in this.Package.Components.Component.Items.Library)
-            {
-                string libraryName = p.Path;
-                string libraryRevision = "";
-                if (libraryName.Contains('\\'))
-                {
-                    string[] tmp = p.Path.Split(new char[] { '\\' });
-                    libraryName = tmp[tmp.Length - 1];
-                    libraryRevision = tmp[tmp.Length - 2];
-                }
-                sb.AppendLine(String.Format("{0,-60}", libraryName) + String.Format("{0,-40}", libraryRevision));
-            }
-            sb.AppendLine();
 
             sb.AppendLine("Dependencies");
             sb.AppendLine(String.Format("{0,-40}", "Name"));// + String.Format("{0,-40}", "Plugin Guid") + "Version");

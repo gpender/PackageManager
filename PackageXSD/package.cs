@@ -8,6 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using PackageManager.ViewModels;
 using System.Xml.Serialization;
 
 // 
@@ -162,7 +163,7 @@ public partial class PackageStringLocalized {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-public partial class PackageGeneral {
+public partial class PackageGeneral : ViewModelBase {
     
     private string idField;
     
@@ -201,6 +202,7 @@ public partial class PackageGeneral {
         }
         set {
             this.versionField = value;
+            OnPropertyChanged("Version");
         }
     }
     
@@ -431,9 +433,11 @@ public partial class PackageComponentsComponentGeneral {
 public partial class PackageComponentsComponentItems {
     
     private PackageComponentsComponentItemsDeviceDescription[] deviceDescriptionField;
-    
+
     private PackageComponentsComponentItemsFile[] fileField;
-    
+
+    private PackageComponentsComponentItemsFolder[] folderField;
+
     private PackageComponentsComponentItemsLibrary[] libraryField;
     
     private PackageComponentsComponentItemsPlugIn[] plugInField;
@@ -454,7 +458,21 @@ public partial class PackageComponentsComponentItems {
             this.deviceDescriptionField = value;
         }
     }
-    
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("Folder")]
+    public PackageComponentsComponentItemsFolder[] Folder
+    {
+        get
+        {
+            return this.folderField;
+        }
+        set
+        {
+            this.folderField = value;
+        }
+    }
+
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("File")]
     public PackageComponentsComponentItemsFile[] File {
@@ -542,6 +560,47 @@ public partial class PackageComponentsComponentItemsDeviceDescription {
         }
     }
 }
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.17929")]
+[System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType = true)]
+public partial class PackageComponentsComponentItemsFolder
+{
+
+    private string targetFolderField;
+
+    private string pathField;
+
+    /// <remarks/>
+    public string TargetFolder
+    {
+        get
+        {
+            return this.targetFolderField;
+        }
+        set
+        {
+            this.targetFolderField = value;
+        }
+    }
+
+    /// <remarks/>
+    public string Path
+    {
+        get
+        {
+            return this.pathField;
+        }
+        set
+        {
+            this.pathField = value;
+        }
+    }
+}
+
+
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.17929")]

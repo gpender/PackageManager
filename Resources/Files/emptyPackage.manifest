@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Package>
+  <Strings>
+  </Strings>
+  <General>
+    <Id>{PACKAGE GUID}</Id>
+    <Version>1.0.0.0</Version>
+    <Name>Package Name</Name>
+    <Vendor>Parker Hannifin Manuacturing Ltd</Vendor>
+    <Copyright>Copyright (c) 2018 by Parker Hannifin Manuacturing Ltd. All rights reserved.</Copyright>
+    <Description>Package Description</Description>
+    <Icon>Icon/parker.ico</Icon>
+    <RequiredInstallerVersion>3.5.6.0</RequiredInstallerVersion>
+  </General>
+  <TargetDirectoryDefinitions>
+  </TargetDirectoryDefinitions>
+  <Components>
+    <Component>
+      <General>
+        <Id>0</Id>
+        <Name>Package Name</Name>
+        <Description>Package Description</Description>
+        <Selectable>false</Selectable>
+        <SelectedByDefault>true</SelectedByDefault>
+      </General>
+      <Items>
+      </Items>
+      <Dependencies>
+        <MinimumPlugInVersion>
+          <PlugIn>2a785a6d-f546-47d1-9107-6bcaa0f232cf</PlugIn>
+          <Version>3.5.6.0</Version>
+          <Annotation>Check for DeviceObject Plugin 3.5.6.0 minimum</Annotation>
+        </MinimumPlugInVersion>
+      </Dependencies>
+    </Component>
+  </Components>
+</Package>

@@ -1,0 +1,50 @@
+﻿<Window x:Class="PackageManager.Views.NewFolder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:cc_local="clr-namespace:PackageManager.CustomControls"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="New Folder" Height="180" Width="500">
+    <Grid x:Name="LayoutRoot" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Margin="5">Source Folder</TextBlock>
+        <TextBox Height="26" Text="{Binding SourceFolder}" Grid.Column="1" Margin="0" IsEnabled="{Binding NotEditMode}"/>
+        <Button Margin="5,0" Grid.Column="2" Height="20" Width="20" Click="Button_Click" IsEnabled="{Binding NotEditMode}">...</Button>
+        <TextBlock Margin="5" Grid.Row="2">Target Folder</TextBlock>
+        <cc_local:TargetFolderOptionsListView Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" SelectedItem="{Binding SelectedTargetFolderOption}" BorderThickness="0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+            </ListBox.Resources>
+            <ListBox.ItemTemplate >
+                <DataTemplate >
+                    <RadioButton Background="Red" GroupName="radioList2" MinWidth="90" Tag="{Binding}" Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected, Mode=TwoWay}" Style="{StaticResource RadioButtonStyle}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </cc_local:TargetFolderOptionsListView>
+        <!--<StackPanel Margin="5" Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+            <RadioButton  Margin="10,0" ToolTip="Folder will be located under Codesys ROOT folder" Style="{StaticResource RadioButtonStyle}">ROOT</RadioButton>
+            <RadioButton Margin="10,0" ToolTip="Folder will be located under Codesys COMMON folder" Style="{StaticResource RadioButtonStyle}">COMMON</RadioButton>
+            <RadioButton Margin="10,0" IsChecked="True" Style="{StaticResource RadioButtonStyle}">Other Folder</RadioButton>
+        </StackPanel>-->
+        <TextBox Height="26" Text="{Binding TargetFolder}" VerticalAlignment="Top" Grid.Row="3" Grid.Column="1" Margin="0"/>
+        <TextBlock x:Name="error" Grid.Row="4" Grid.ColumnSpan="2"></TextBlock>
+        <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,0,0" Grid.Row="6" Grid.Column="1" />
+        <Button x:Name="OKButton" Content="OK" Click="OKButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,79,0" Grid.Row="6" Grid.Column="1" />
+    </Grid>
+</Window>

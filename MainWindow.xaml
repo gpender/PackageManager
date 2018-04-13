@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:uc="clr-namespace:PackageManager.Views"
-        Title="Parker Package Maker" Name="PackageWindow" Height="700" Width="1100">
+        Icon="Resources/NonEmbedded/parker.ico"
+        Title="Parker Codesys Package Maker" Name="PackageWindow" Height="700" Width="1200">
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,27 +13,30 @@
         </Grid.RowDefinitions>
         <Grid Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <uc:GeneralInfoUC DataContext="{Binding}"/>
             <uc:ComponentsGeneralUC Grid.Column="1"  DataContext="{Binding}"/>
         </Grid>
         <TabControl Grid.Row="1" Margin="5" VerticalAlignment="Stretch">
             <TabItem Header="Devices">
-                <uc:ComponentItemDevicesUC Grid.Row="1" DataContext="{Binding}"/>
+                <uc:ComponentItemDevicesUC DataContext="{Binding}"/>
             </TabItem>
             <TabItem Header="Files">
-                <uc:ComponentItemFilesUC Grid.Row="2" DataContext="{Binding}"/>
+                <uc:ComponentItemFilesUC DataContext="{Binding}"/>
             </TabItem>
+            <TabItem Header="Folders">
+                <uc:ComponentItemFoldersUC DataContext="{Binding}"/>
+            </TabItem>            
             <TabItem Header="Plugin Dependencies">
-                <uc:ComponentItemDependenciesUC Grid.Row="3" DataContext="{Binding}"/>
+                <uc:ComponentItemDependenciesUC DataContext="{Binding}"/>
             </TabItem> 
             <TabItem Header="Interfaces and Project Templates">
-                <uc:ComponentItemInterfacesAndTemplatesUC Grid.Row="2" DataContext="{Binding}"/>
+                <uc:ComponentItemInterfacesAndTemplatesUC DataContext="{Binding}"/>
             </TabItem>
             <TabItem Header="Libraries">
-                <uc:ComponentItemLibrariesUC Grid.Row="3" DataContext="{Binding}"/>
+                <uc:ComponentItemLibrariesUC DataContext="{Binding}"/>
             </TabItem>
             <TabItem Header="PlugIns">
                 <Grid>
@@ -45,13 +49,13 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Online Help">
-                <uc:ComponentItemOnlineHelpUC Grid.Row="5" DataContext="{Binding}"/>
+                <uc:ComponentItemOnlineHelpUC DataContext="{Binding}"/>
             </TabItem>
             <TabItem Header="Menu Commands">
-                <uc:ComponentItemMenuCommandUC Grid.Row="5" DataContext="{Binding}"/>
+                <uc:ComponentItemMenuCommandUC DataContext="{Binding}"/>
             </TabItem>
             <TabItem Header="Dependency Conflicts">
-                <ListView Grid.Row="2" ItemsSource="{Binding DependencyConflicts}" Margin="5" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding DependencyConflicts}" Margin="5" VerticalAlignment="Stretch">
                     <ListView.View>
                         <GridView>
                             <GridView.Columns>
@@ -65,7 +69,7 @@
                 </ListView>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="7" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
+        <Grid Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>

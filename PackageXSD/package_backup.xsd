@@ -78,14 +78,6 @@
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
-                          <xs:element maxOccurs="unbounded" name="Folder">
-                            <xs:complexType>
-                              <xs:sequence>
-                                <xs:element name="TargetFolder" type="xs:string" />
-                                <xs:element name="Path" type="xs:string" />
-                              </xs:sequence>
-                            </xs:complexType>
-                          </xs:element>
                           <xs:element maxOccurs="unbounded" name="Library">
                             <xs:complexType>
                               <xs:sequence>

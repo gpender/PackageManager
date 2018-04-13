@@ -9,6 +9,9 @@ using System.Windows.Input;
 using PackageManager.Model;
 using PackageManager.ViewModels.Command;
 using PackageManager.Views;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using IconImage = System.Drawing.Icon;
 
 namespace PackageManager.ViewModels
 {
@@ -17,9 +20,12 @@ namespace PackageManager.ViewModels
        
         RelayCommand readPackageCommand;
         RelayCommand createPackageCommand;
+        RelayCommand createPackageGuidCommand;
+        RelayCommand editIconCommand;
         RelayCommand documentRevisionsCommand;
         RelayCommand addDeviceCommand;
         RelayCommand<string> addFileCommand;
+        RelayCommand addFolderCommand;
         RelayCommand addLibraryCommand;
         RelayCommand addPluginCommand;
         RelayCommand addHelpFileCommand;
@@ -28,6 +34,8 @@ namespace PackageManager.ViewModels
 
         RelayCommand<PackageComponentsComponentItemsDeviceDescription> deleteDeviceCommand;
         RelayCommand<PackageComponentsComponentItemsFile> deleteFileCommand;
+        RelayCommand<PackageComponentsComponentItemsFolder> deleteFolderCommand;
+        RelayCommand<PackageComponentsComponentItemsFolder> editFolderCommand;
         RelayCommand<PackageComponentsComponentItemsLibrary> deleteLibraryCommand;
         RelayCommand<PackageComponentsComponentItemsPlugIn> deletePluginCommand;
         RelayCommand<PackageComponentsComponentItemsOnlineHelpFile> deleteHelpFileCommand;
@@ -81,7 +89,18 @@ namespace PackageManager.ViewModels
                 return null;
             }
         }
-
+        public PackageComponentsComponentItemsFolder[] PackageComponentFolders
+        {
+            get
+            {
+                try
+                {
+                    return packageManager.Package == null ? null : packageManager.Package.Components.Component.Items.Folder.ToArray();
+                }
+                catch { }
+                return null;
+            }
+        }
         public PackageComponentsComponentDependenciesMinimumPlugInVersion[] PackageComponentDependencies
         {
             get 
@@ -160,6 +179,7 @@ namespace PackageManager.ViewModels
             OnPropertyChanged("PackageComponents");
             OnPropertyChanged("PackageComponentDevices");
             OnPropertyChanged("PackageComponentFiles");
+            OnPropertyChanged("PackageComponentFolders");
             OnPropertyChanged("PackageComponentInterfacesAndTemplates");
             OnPropertyChanged("PackageComponentLibraries");
             OnPropertyChanged("PackageComponentPlugins");
@@ -175,6 +195,34 @@ namespace PackageManager.ViewModels
         }
 
         #endregion
+
+        #region CreatePackageGuidCommand
+
+        public ICommand CreatePackageGuidCommand
+        {
+            get
+            {
+                if (createPackageGuidCommand == null)
+                {
+                    createPackageGuidCommand = new RelayCommand(() => this.CreatePackageGuid(), () => this.CanCreatePackageGuid);
+                }
+                return createPackageGuidCommand;
+            }
+        }
+
+        private void CreatePackageGuid()
+        {
+            packageManager.CreatePackageGuid();
+            OnPropertyChanged("PackageGeneral");
+        }
+
+        bool CanCreatePackageGuid
+        {
+            get { return packageManager.Package != null; }
+        }
+
+        #endregion
+
 
         #region CreatePackageCommand
 
@@ -197,7 +245,7 @@ namespace PackageManager.ViewModels
 
         bool CanCreatePackage
         {
-            get { return packageManager.Package !=null; }
+            get { return packageManager.Package != null; }
         }
 
         #endregion
@@ -389,6 +437,7 @@ namespace PackageManager.ViewModels
                 PackageManager.Model.CodesysPackageManager.FileType fileType = (PackageManager.Model.CodesysPackageManager.FileType)Enum.Parse(typeof(PackageManager.Model.CodesysPackageManager.FileType), fileTypeString);
                 packageManager.AddFile(fileType);
                 OnPropertyChanged("PackageComponentFiles");
+                OnPropertyChanged("PackageComponentFolders");
                 OnPropertyChanged("PackageComponentInterfacesAndTemplates");
             }
             catch (Exception ex)
@@ -404,9 +453,144 @@ namespace PackageManager.ViewModels
 
         #endregion
 
-        #region DeleteLibraryCommand
+        #region DeleteFolderCommand
 
-        public ICommand DeleteLibraryCommand
+        public ICommand DeleteFolderCommand
+        {
+            get
+            {
+                if (deleteFolderCommand == null)
+                {
+                    deleteFolderCommand = new RelayCommand<PackageComponentsComponentItemsFolder>((parameter) => this.DeleteFolder(parameter));
+                }
+                return deleteFolderCommand;
+            }
+        }
+
+        public void DeleteFolder(PackageComponentsComponentItemsFolder folder)
+        {
+            try
+            {
+                packageManager.RemoveFolder(folder);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            OnPropertyChanged("PackageComponentFolders");
+        }
+
+        bool CanDeleteFolder
+        {
+            get { return true; }// packageManager.Package != null; }
+        }
+
+        #endregion
+
+        #region AddFolderCommand
+
+        public ICommand AddFolderCommand
+        {
+            get
+            {
+                if (addFolderCommand == null)
+                {
+                    addFolderCommand = new RelayCommand(() => this.AddFolder(), () => this.CanAddFolder);
+                }
+                return addFolderCommand;
+            }
+        }
+
+        public void AddFolder()
+        {
+            try
+            {
+                packageManager.AddFolder();
+                OnPropertyChanged("PackageComponentFolders");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        bool CanAddFolder
+        {
+            get { return true; }// packageManager.Package != null; }
+        }
+
+        #endregion
+
+        #region EditFolderCommand
+
+        public ICommand EditFolderCommand
+        {
+            get
+            {
+                if (editFolderCommand == null)
+                {
+                    editFolderCommand = new RelayCommand<PackageComponentsComponentItemsFolder>((parameter) => this.EditFolder(parameter));
+                }
+                return editFolderCommand;
+            }
+        }
+
+        public void EditFolder(PackageComponentsComponentItemsFolder folder)
+        {
+            packageManager.EditFolder(folder);
+            OnPropertyChanged("PackageComponentFolders");
+        }
+
+        #endregion
+
+        #region EditIconCommand
+
+        public ICommand EditIconCommand
+        {
+            get
+            {
+                if (editIconCommand == null)
+                {
+                    editIconCommand = new RelayCommand(()=> this.EditIcon(), () => CanEditIcon());
+                }
+                return editIconCommand;
+            }
+        }
+        public ImageSource IconPath
+        {
+            get
+            {
+                if (File.Exists(packageManager.IconPath))
+                {
+                    IconImage ico = IconImage.ExtractAssociatedIcon(packageManager.IconPath);
+                    MemoryStream strm = new MemoryStream();
+                    ico.Save(strm);
+                    IconBitmapDecoder ibd = new IconBitmapDecoder(strm, BitmapCreateOptions.None, BitmapCacheOption.Default);
+                    return ibd.Frames[0];
+                }
+                return null;
+            }
+        }
+        public void EditIcon()
+        {
+            packageManager.EditIcon();
+            OnPropertyChanged("PackageGeneral");
+            OnPropertyChanged("IconPath");
+        }
+        public bool CanEditIcon()
+        {
+            return true;
+        }
+
+
+
+
+#endregion
+
+
+#region DeleteLibraryCommand
+
+public ICommand DeleteLibraryCommand
         {
             get
             {

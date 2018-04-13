@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignWidth="500">
-    <GroupBox Header="Components General Information" Background="White">
+    <GroupBox Header="Component General Information" Background="White">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Grid Margin="5">
+            <!--<Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="26"/>
                     <RowDefinition Height="26"/>
@@ -26,7 +26,7 @@
                 <TextBox Text="{Binding PackageComponents.Component.General.Name}" Grid.Column="1" Grid.Row="1"/>
                 <TextBlock VerticalAlignment="Center" Margin="5" Grid.Row="2">Description</TextBlock>
                 <TextBox Text="{Binding PackageComponents.Component.General.Description}" Grid.Column="1" Grid.Row="2"/>
-            </Grid>
+            </Grid>-->
         <Grid Grid.Column="1" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="26"/>

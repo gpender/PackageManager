@@ -30,7 +30,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <Button Grid.Row="1" HorizontalAlignment="Right" Margin="0,5" Height="20" Width="100" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AddAddMenuCommand}" Content="Add HelpFile"/>
+            <!--<Button Grid.Row="1" HorizontalAlignment="Right" Margin="0,5" Height="20" Width="100" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AddAddMenuCommand}" Content="Add HelpFile"/>-->
         </Grid>
     </GroupBox>
 </UserControl>
