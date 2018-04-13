@@ -6,8 +6,8 @@
     <Id>{PACKAGE GUID}</Id>
     <Version>1.0.0.0</Version>
     <Name>Package Name</Name>
-    <Vendor>Parker Hannifin Manuacturing Ltd</Vendor>
-    <Copyright>Copyright (c) 2018 by Parker Hannifin Manuacturing Ltd. All rights reserved.</Copyright>
+    <Vendor>Parker Hannifin Manufacturing Ltd</Vendor>
+    <Copyright>Copyright (c) 2018 by Parker Hannifin Manufacturing Ltd. All rights reserved.</Copyright>
     <Description>Package Description</Description>
     <Icon>Icon/parker.ico</Icon>
     <RequiredInstallerVersion>3.5.6.0</RequiredInstallerVersion>
