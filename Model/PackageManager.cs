@@ -994,16 +994,19 @@ namespace PackageManager.Model
             sb.AppendLine();
             sb.AppendLine("Plugins");
             sb.AppendLine(String.Format("{0,-50}", "Plugin Name") + String.Format("{0,-40}", "Plugin Guid") + "Version");
-            foreach (var p in this.Package.Components.Component.Items.PlugIn)
+            if (Package.Components.Component.Items.PlugIn != null)
             {
-                string pluginDllName = p.Path;
-                if (pluginDllName.Contains('\\'))
+                foreach (var p in this.Package.Components.Component.Items.PlugIn)
                 {
-                    string[] tmp = p.Path.Split(new char[] { '\\' });
-                    pluginDllName = tmp[tmp.Length - 1];
-                }
-                sb.AppendLine(String.Format("{0,-50}", pluginDllName) + String.Format("{0,-40}", p.PlugInGuid.ToString()) + p.Version);
+                    string pluginDllName = p.Path;
+                    if (pluginDllName.Contains('\\'))
+                    {
+                        string[] tmp = p.Path.Split(new char[] { '\\' });
+                        pluginDllName = tmp[tmp.Length - 1];
+                    }
+                    sb.AppendLine(String.Format("{0,-50}", pluginDllName) + String.Format("{0,-40}", p.PlugInGuid.ToString()) + p.Version);
 
+                }
             }
             sb.AppendLine();
 
