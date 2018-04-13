@@ -176,6 +176,7 @@ namespace PackageManager.ViewModels
         {
             packageManager.ReadPackage();
             OnPropertyChanged("PackageGeneral");
+            OnPropertyChanged("IconPath");
             OnPropertyChanged("PackageComponents");
             OnPropertyChanged("PackageComponentDevices");
             OnPropertyChanged("PackageComponentFiles");
