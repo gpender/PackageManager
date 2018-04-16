@@ -76,8 +76,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Command="{Binding ReadPackageCommand}" Height="28" Width="150" Margin="5" Content="Read Package" Grid.Column="1"/>
-            <Button Command="{Binding CreatePackageCommand}" Height="28" Width="150" Margin="5" Content="Create Package" Grid.Column="2"/>
+            <Button Command="{Binding ReadPackageCommand}" Height="28" Width="150" Margin="5" Content="Open Package" Grid.Column="1"/>
+            <Button Command="{Binding CreatePackageCommand}" Height="28" Width="150" Margin="5" Content="Save Package" Grid.Column="2"/>
             <Button Command="{Binding DocumentRevisionsCommand}" Height="28" Width="150" Margin="5" Content="Document Revisions" Grid.Column="3" HorizontalAlignment="Right"/>
         </Grid>
     </Grid>

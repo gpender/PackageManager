@@ -27,6 +27,7 @@ namespace PackageManager.ViewModels
         RelayCommand addDeviceCommand;
         RelayCommand<string> addFileCommand;
         RelayCommand addFolderCommand;
+        RelayCommand deleteSelectedFolderItemCommand;
         RelayCommand addLibraryCommand;
         RelayCommand addPluginCommand;
         RelayCommand addHelpFileCommand;
@@ -42,6 +43,7 @@ namespace PackageManager.ViewModels
         RelayCommand<PackageComponentsComponentItemsOnlineHelpFile> deleteHelpFileCommand;
         RelayCommand<PackageComponentsComponentItemsAddMenuCommand> deleteAddMenuCommand;
 
+        UserItem selectedFolderTreeItem;
 
         CodesysPackageManager packageManager;
 
@@ -102,40 +104,9 @@ namespace PackageManager.ViewModels
                 return null;
             }
         }
-
-        //ObservableCollection<UserDirectory> folderHierarchy = new ObservableCollection<UserDirectory>();
-        //public ObservableCollection<UserDirectory> FolderHierarchy
-        //{
-        //    get
-        //    {
-        //        return folderHierarchy;
-        //    }
-        //}
         public PackageComponentsComponentDependenciesMinimumPlugInVersion[] PackageComponentDependencies
         {
-            get 
-            {
-                //if (packageManager.Package == null)
-                //{
-                //    packageManager.Package = new Package();
-                //}
-                //if (packageManager.Package.Components == null)
-                //{
-                //    packageManager.Package.Components = new PackageComponents();
-                //} 
-                //if (packageManager.Package.Components.Component == null)
-                //{
-                //    packageManager.Package.Components.Component = new PackageComponentsComponent();
-                //}
-                //if (packageManager.Package.Components.Component.Dependencies == null)
-                //{
-                //    PackageComponentsComponentDependenciesMinimumPlugInVersion tmp = new PackageComponentsComponentDependenciesMinimumPlugInVersion();
-                //    PackageComponentsComponentDependenciesMinimumPlugInVersion[] tmp2 = new PackageComponentsComponentDependenciesMinimumPlugInVersion[1];
-                //    tmp2[0] = tmp;
-                //    packageManager.Package.Components.Component.Dependencies = tmp2;
-                //}
-                return packageManager.Package == null ? null : packageManager.Package.Components.Component.Dependencies; 
-            }
+            get { return packageManager.Package == null ? null : packageManager.Package.Components.Component.Dependencies;  }
         }
 
         public PackageComponentsComponentItemsLibrary[] PackageComponentLibraries
@@ -162,7 +133,15 @@ namespace PackageManager.ViewModels
         {
             get { return packageManager.Package == null ? null : packageManager.Package.Components.Component.Items.AddMenuCommand; }
         }
-  
+        public UserItem SelectedFolderTreeItem
+        {
+            get { return selectedFolderTreeItem; }
+            set
+            {
+                selectedFolderTreeItem = value;
+                OnPropertyChanged("SelectedFolderTreeItem");
+            }
+        }
         public MainViewModel()
         {
             packageManager = new CodesysPackageManager();
@@ -414,7 +393,7 @@ namespace PackageManager.ViewModels
         {
             try
             {
-                packageManager.RemoveFile(file);
+                packageManager.RemoveItemsFile(file);
                 OnPropertyChanged("PackageComponentFiles");
                 OnPropertyChanged("PackageComponentInterfacesAndTemplates");
             }
@@ -502,6 +481,39 @@ namespace PackageManager.ViewModels
 
         #endregion
 
+        #region DeleteSelectedFolderItemCommand
+
+        public ICommand DeleteSelectedFolderItemCommand
+        {
+            get
+            {
+                if (deleteSelectedFolderItemCommand == null)
+                {
+                    deleteSelectedFolderItemCommand = new RelayCommand(() => this.DeleteSelectedFolderTreeItem(), () => this.CanDeleteSelectedFolderTreeItem);
+                }
+                return deleteSelectedFolderItemCommand;
+            }
+        }
+
+        public void DeleteSelectedFolderTreeItem()
+        {
+            try
+            {
+                packageManager.RemoveFileFromItemsFolder(SelectedFolderTreeItem);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            OnPropertyChanged("PackageComponentFolders");
+        }
+
+        bool CanDeleteSelectedFolderTreeItem
+        {
+            get { return SelectedFolderTreeItem !=null; }
+        }
+
+        #endregion
         #region AddFolderCommand
 
         public ICommand AddFolderCommand

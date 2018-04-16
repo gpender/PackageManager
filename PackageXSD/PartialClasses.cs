@@ -40,38 +40,43 @@ public partial class PackageComponentsComponentItemsDeviceDescription : ViewMode
     }
 }
 
-public class UserDirectory
+
+public class UserItem
+{
+    public string Name { get { return System.IO.Path.GetFileName(Path); } }
+    public PackageComponentsComponentItemsFolder ParentItemsFolder { get; protected set; }
+    public string Path { get; set; }
+    public UserItem(string path, PackageComponentsComponentItemsFolder parentItemsFolder)
+    {
+        Path = path;
+        ParentItemsFolder = parentItemsFolder;
+    }
+
+}
+public class UserDirectory : UserItem
 {
     public ObservableCollection<UserFile> Files { get; set; } = new ObservableCollection<UserFile>();
     public ObservableCollection<UserDirectory> SubFolders { get; set; } = new ObservableCollection<UserDirectory>();
     public IEnumerable Items { get { return SubFolders?.Cast<Object>().Concat(Files); } }
-    public string DirectoryPath { get; set; }
-    public string Name { get { return System.IO.Path.GetFileName(DirectoryPath); } }
 
-    public UserDirectory(string folderName)
+    public UserDirectory(string path, PackageComponentsComponentItemsFolder parentItemsFolder) : base(path,parentItemsFolder)
     {
-        if (folderName.Length <= 256)
+        if (Path.Length <= 256)
         {
-            DirectoryPath = folderName;
-            foreach (var d in System.IO.Directory.EnumerateDirectories(folderName))
+            foreach (var dir in System.IO.Directory.EnumerateDirectories(Path))
             {
-                SubFolders.Add(new UserDirectory(d));
+                SubFolders.Add(new UserDirectory(dir, parentItemsFolder));
             }
-            foreach (var d in System.IO.Directory.EnumerateFiles(folderName))
+            foreach (var file in System.IO.Directory.EnumerateFiles(path))
             {
-                Files.Add(new UserFile(d));
+                Files.Add(new UserFile(file, parentItemsFolder));
             }
         }
     }
 }
-public class UserFile
+public class UserFile : UserItem
 {
-    public string FilePath { get; set; }
-    public string Name { get { return System.IO.Path.GetFileName(FilePath); } }
-    public UserFile(string filePath)
-    {
-        FilePath = filePath;
-    }
+    public UserFile(string path, PackageComponentsComponentItemsFolder parentItemsFolder) : base(path, parentItemsFolder) { }
 }
 
 public partial class PackageComponentsComponentItemsFolder

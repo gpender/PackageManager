@@ -191,7 +191,7 @@ namespace PackageManager.Model
             {
                 foreach (var f in package.Components.Component.Items.Folder)
                 {
-                    f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path));
+                    f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path,f));
                 }
             }
 
@@ -401,7 +401,22 @@ namespace PackageManager.Model
             }
         }
 
-        internal void RemoveFile(PackageComponentsComponentItemsFile file)
+        internal void RemoveFileFromItemsFolder(UserItem userItem)// string filePath, PackageComponentsComponentItemsFolder parentItemsFolder)
+        {
+            if (File.Exists(userItem.Path))
+            {
+                File.Delete(userItem.Path);
+            }
+            if (Directory.Exists(userItem.Path))
+            {
+                Directory.Delete(userItem.Path, true);
+            }
+            userItem.ParentItemsFolder.FolderHierarchy.Clear();
+            userItem.ParentItemsFolder.FolderHierarchy.Add(new UserDirectory(tmpPath + userItem.ParentItemsFolder.Path, userItem.ParentItemsFolder));
+
+        }
+
+        internal void RemoveItemsFile(PackageComponentsComponentItemsFile file)
         {
             if (Package.Components.Component.Items.File != null)
             {
@@ -527,7 +542,7 @@ namespace PackageManager.Model
                     folder = new PackageComponentsComponentItemsFolder();
                     folder.TargetFolder = folderProxy.TargetFolder;
                     folder.Path = destinationDirectoryInfo.Name;
-                    folder.FolderHierarchy.Add(new UserDirectory(tmpPath + folder.Path));
+                    folder.FolderHierarchy.Add(new UserDirectory(tmpPath + folder.Path,folder));
                     folderList.Insert(0, folder);
                     Package.Components.Component.Items.Folder = folderList.ToArray();
                 }
@@ -539,33 +554,33 @@ namespace PackageManager.Model
 
             if (fileType == FileType.FolderHierarchy)
             {
-                string folderName = null;
-                System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
-                if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    folderName = folderDialog.SelectedPath;
-                    DirectoryInfo sourceDirectoryInfo = new DirectoryInfo(folderName);
+                //string folderName = null;
+                //System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+                //if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                //{
+                //    folderName = folderDialog.SelectedPath;
+                //    DirectoryInfo sourceDirectoryInfo = new DirectoryInfo(folderName);
 
-                    CopyDirectory(sourceDirectoryInfo.FullName, tmpPath + @"\" + sourceDirectoryInfo.Name);
-                    DirectoryInfo destinationDirectoryInfo = new DirectoryInfo(tmpPath + @"\" + sourceDirectoryInfo.Name);
+                //    CopyDirectory(sourceDirectoryInfo.FullName, tmpPath + @"\" + sourceDirectoryInfo.Name);
+                //    DirectoryInfo destinationDirectoryInfo = new DirectoryInfo(tmpPath + @"\" + sourceDirectoryInfo.Name);
 
-                    List<PackageComponentsComponentItemsFile> fileList = new List<PackageComponentsComponentItemsFile>();
-                    if (Package.Components.Component.Items.File != null)
-                    {
-                        fileList = Package.Components.Component.Items.File.ToList();
-                    }
-                    PackageComponentsComponentItemsFile file;// = new PackageComponentsComponentItemsFile();
-                    foreach (var f in destinationDirectoryInfo.EnumerateFiles("*", SearchOption.AllDirectories))
-                    {
-                        file = new PackageComponentsComponentItemsFile();
-                        file.FileType = fileType;
-                        file.TargetFolder = "%AP_ROOT%";
-                        file.Path = destinationDirectoryInfo.Name + f.FullName.Replace(tmpPath + @"\" + destinationDirectoryInfo.Name, string.Empty);
-                        file.IsInterface = false;
-                        fileList.Insert(0, file);
-                    }
-                    Package.Components.Component.Items.File = fileList.ToArray();
-                }
+                //    List<PackageComponentsComponentItemsFile> fileList = new List<PackageComponentsComponentItemsFile>();
+                //    if (Package.Components.Component.Items.File != null)
+                //    {
+                //        fileList = Package.Components.Component.Items.File.ToList();
+                //    }
+                //    PackageComponentsComponentItemsFile file;// = new PackageComponentsComponentItemsFile();
+                //    foreach (var f in destinationDirectoryInfo.EnumerateFiles("*", SearchOption.AllDirectories))
+                //    {
+                //        file = new PackageComponentsComponentItemsFile();
+                //        file.FileType = fileType;
+                //        file.TargetFolder = "%AP_ROOT%";
+                //        file.Path = destinationDirectoryInfo.Name + f.FullName.Replace(tmpPath + @"\" + destinationDirectoryInfo.Name, string.Empty);
+                //        file.IsInterface = false;
+                //        fileList.Insert(0, file);
+                //    }
+                //    Package.Components.Component.Items.File = fileList.ToArray();
+                //}
             }
             else
             {

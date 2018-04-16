@@ -30,7 +30,7 @@
                 </ListView.View>
             </ListView>
             <DockPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0,5">
-                <Button Height="20" Width="100" Margin="5,0" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AddFileCommand}" CommandParameter="FolderHierarchy" Content="Add Folder (and files)"/>
+                <Button Height="20" Width="100" Margin="5,0" FontSize="10" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.AddFileCommand}" CommandParameter="FolderHierarchy" Content="Add File"/>
             </DockPanel>
         </Grid>
     </GroupBox>
