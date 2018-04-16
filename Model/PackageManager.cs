@@ -165,45 +165,48 @@ namespace PackageManager.Model
             packageManifest = tmpPath + @"\package.manifest";
             starterManifest = starterManifest == null ? packageManifest : starterManifest;
             package = SerializationExtensions.Deserialize<Package>(XElement.Load(starterManifest));
-            if (package.Components.Component.Items.PlugIn != null)
+            if(package != null)
             {
-                foreach (var plugin in package.Components.Component.Items.PlugIn)
+                if (package.Components.Component.Items.PlugIn != null)
                 {
-                    string filePath = tmpPath + @"\" + plugin.Path;
-                    Guid pluginGuid = Guid.Empty;
-                    List<AssemblyName> assys = GetPluginGuid(filePath, out pluginGuid);
-                    AddAssembliesToRegister(plugin.Path, pluginGuid, assys);
-                    plugin.PlugInGuid = pluginGuid;
-                    plugin.Version = GetFileVersion(filePath);
+                    foreach (var plugin in package.Components.Component.Items.PlugIn)
+                    {
+                        string filePath = tmpPath + @"\" + plugin.Path;
+                        Guid pluginGuid = Guid.Empty;
+                        List<AssemblyName> assys = GetPluginGuid(filePath, out pluginGuid);
+                        AddAssembliesToRegister(plugin.Path, pluginGuid, assys);
+                        plugin.PlugInGuid = pluginGuid;
+                        plugin.Version = GetFileVersion(filePath);
+                    }
                 }
-            }
 
-            if (package.Components.Component.Items.File != null)
-            {
-                foreach (var f in package.Components.Component.Items.File)
+                if (package.Components.Component.Items.File != null)
                 {
-                    string filePath = tmpPath + @"\" + f.Path;
-                    f.IsInterface = f.Path.ToLowerInvariant().EndsWith(".dll");
-                    f.Version = GetFileVersion(filePath);
+                    foreach (var f in package.Components.Component.Items.File)
+                    {
+                        string filePath = tmpPath + @"\" + f.Path;
+                        f.IsInterface = f.Path.ToLowerInvariant().EndsWith(".dll");
+                        f.Version = GetFileVersion(filePath);
+                    }
                 }
-            }
-            if (package.Components.Component.Items.Folder != null)
-            {
-                foreach (var f in package.Components.Component.Items.Folder)
+                if (package.Components.Component.Items.Folder != null)
                 {
-                    f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path,f));
+                    foreach (var f in package.Components.Component.Items.Folder)
+                    {
+                        f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path,f));
+                    }
                 }
-            }
 
-            if (package.Components.Component.Items.DeviceDescription != null)
-            {
-                foreach (var f in package.Components.Component.Items.DeviceDescription)
+                if (package.Components.Component.Items.DeviceDescription != null)
                 {
-                    string filePath = tmpPath + @"\" + f.Path;
-                    DeviceDescription devDesc = SerializationExtensions.Deserialize<DeviceDescription>(XElement.Load(filePath));
-                    f.Version = devDesc.Device.DeviceIdentification.Version;
-                    f.DeviceId = devDesc.Device.DeviceIdentification.Id;
-                    f.DeviceType = devDesc.Device.DeviceIdentification.Type.ToString();
+                    foreach (var f in package.Components.Component.Items.DeviceDescription)
+                    {
+                        string filePath = tmpPath + @"\" + f.Path;
+                        DeviceDescription devDesc = SerializationExtensions.Deserialize<DeviceDescription>(XElement.Load(filePath));
+                        f.Version = devDesc.Device.DeviceIdentification.Version;
+                        f.DeviceId = devDesc.Device.DeviceIdentification.Id;
+                        f.DeviceType = devDesc.Device.DeviceIdentification.Type.ToString();
+                    }
                 }
             }
         }

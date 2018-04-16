@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Windows;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -77,15 +78,16 @@ namespace PackageManager.Serialization
         }
         public static T Deserialize<T>(this XElement source) where T : class
         {
-            //try
-            //{
+            try
+            {
                 var serializer = XmlSerializerFactory.GetSerializerFor(typeof(T));
                 return (T)serializer.Deserialize(source.CreateReader());
-            //}
-            //catch //(Exception x)         
-            //{
-            //    return null;
-            //}
+            }
+            catch (Exception x)         
+            {
+                MessageBox.Show(x.Message + " " + x.InnerException.Message);
+                return null;
+            }
         }
     }
     public static class XmlSerializerFactory
