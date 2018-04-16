@@ -18,8 +18,8 @@ namespace PackageManager.Model
 {
     public class CodesysPackageManager
     {
-        string commonPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Parker Package Manager";
-        string tmpPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Parker Package Manager\temp";
+        string commonPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Parker Package Manager\";
+        string tmpPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Parker Package Manager\temp\";
         string packageFile = null;
         string packageManifest = null;
         Dictionary<string, Version> AssemblyNameRegister = new Dictionary<string, Version>();
@@ -47,8 +47,8 @@ namespace PackageManager.Model
         {
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                commonPath = ApplicationDeployment.CurrentDeployment.DataDirectory + @"\PPM";
-                tmpPath = ApplicationDeployment.CurrentDeployment.DataDirectory + @"\PPM\tmp";
+                commonPath = ApplicationDeployment.CurrentDeployment.DataDirectory + @"\PPM\";
+                tmpPath = ApplicationDeployment.CurrentDeployment.DataDirectory + @"\PPM\tmp\";
             }
             packageFile = tmpPath + @"\parker.package";
             packageManifest = tmpPath + @"\package.manifest";
@@ -191,7 +191,7 @@ namespace PackageManager.Model
             {
                 foreach (var f in package.Components.Component.Items.Folder)
                 {
-                    string filePath = tmpPath + @"\" + f.Path;
+                    f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path));
                 }
             }
 
@@ -504,8 +504,9 @@ namespace PackageManager.Model
             Template,
             FolderHierarchy
         }
-        internal void AddFolder()
+        internal PackageComponentsComponentItemsFolder AddFolder()
         {
+            PackageComponentsComponentItemsFolder folder = null;
             NewFolder newFolder = new NewFolder();
             FolderProxy folderProxy = new FolderProxy();
             newFolder.DataContext = folderProxy;
@@ -523,14 +524,15 @@ namespace PackageManager.Model
                     {
                         folderList = Package.Components.Component.Items.Folder.ToList();
                     }
-                    PackageComponentsComponentItemsFolder folder = new PackageComponentsComponentItemsFolder();
+                    folder = new PackageComponentsComponentItemsFolder();
                     folder.TargetFolder = folderProxy.TargetFolder;
                     folder.Path = destinationDirectoryInfo.Name;
+                    folder.FolderHierarchy.Add(new UserDirectory(tmpPath + folder.Path));
                     folderList.Insert(0, folder);
-
                     Package.Components.Component.Items.Folder = folderList.ToArray();
                 }
             }
+            return folder;
         }
         internal void AddFile(FileType fileType)
         {

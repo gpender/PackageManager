@@ -12,6 +12,7 @@ namespace PackageManager.CustomControls
     {
         ROOT,
         COMMON,
+        PROGRAMDATA,
         Other_Folder
     }
     public class TargetFolderOptionsListView : ListView

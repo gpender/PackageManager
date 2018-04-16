@@ -1,11 +1,13 @@
 ﻿using PackageManager.ViewModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-
+using static PackageManager.ViewModels.MainViewModel;
 
 public partial class PackageComponentsComponentItemsDeviceDescription : ViewModelBase
 {
@@ -36,6 +38,48 @@ public partial class PackageComponentsComponentItemsDeviceDescription : ViewMode
             OnPropertyChanged("Version");
         }
     }
+}
+
+public class UserDirectory
+{
+    public ObservableCollection<UserFile> Files { get; set; } = new ObservableCollection<UserFile>();
+    public ObservableCollection<UserDirectory> SubFolders { get; set; } = new ObservableCollection<UserDirectory>();
+    public IEnumerable Items { get { return SubFolders?.Cast<Object>().Concat(Files); } }
+    public string DirectoryPath { get; set; }
+    public string Name { get { return System.IO.Path.GetFileName(DirectoryPath); } }
+
+    public UserDirectory(string folderName)
+    {
+        if (folderName.Length <= 256)
+        {
+            DirectoryPath = folderName;
+            foreach (var d in System.IO.Directory.EnumerateDirectories(folderName))
+            {
+                SubFolders.Add(new UserDirectory(d));
+            }
+            foreach (var d in System.IO.Directory.EnumerateFiles(folderName))
+            {
+                Files.Add(new UserFile(d));
+            }
+        }
+    }
+}
+public class UserFile
+{
+    public string FilePath { get; set; }
+    public string Name { get { return System.IO.Path.GetFileName(FilePath); } }
+    public UserFile(string filePath)
+    {
+        FilePath = filePath;
+    }
+}
+
+public partial class PackageComponentsComponentItemsFolder
+{
+    ObservableCollection<UserDirectory> folderHierarchy = new ObservableCollection<UserDirectory>();
+    [XmlIgnoreAttribute]
+    public ObservableCollection<UserDirectory> FolderHierarchy { get => folderHierarchy; }
+
 }
 
 public partial class PackageComponentsComponentItemsFile

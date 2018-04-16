@@ -12,6 +12,7 @@ using PackageManager.Views;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using IconImage = System.Drawing.Icon;
+using System.Collections;
 
 namespace PackageManager.ViewModels
 {
@@ -101,6 +102,15 @@ namespace PackageManager.ViewModels
                 return null;
             }
         }
+
+        //ObservableCollection<UserDirectory> folderHierarchy = new ObservableCollection<UserDirectory>();
+        //public ObservableCollection<UserDirectory> FolderHierarchy
+        //{
+        //    get
+        //    {
+        //        return folderHierarchy;
+        //    }
+        //}
         public PackageComponentsComponentDependenciesMinimumPlugInVersion[] PackageComponentDependencies
         {
             get 
@@ -188,6 +198,10 @@ namespace PackageManager.ViewModels
             OnPropertyChanged("PackageComponentProfileChange");
             OnPropertyChanged("PackageComponentAddMenuCommand");
             OnPropertyChanged("PackageComponentDependencies");
+
+
+            //folderHierarchy.Add(new UserDirectory(@"c:\temp\"));
+            //OnPropertyChanged("FolderHierarchy");
         }
 
         bool CanReadPackage
@@ -507,6 +521,7 @@ namespace PackageManager.ViewModels
             try
             {
                 packageManager.AddFolder();
+                //OnPropertyChanged("FolderHierarchy");
                 OnPropertyChanged("PackageComponentFolders");
             }
             catch (Exception ex)

@@ -46,6 +46,9 @@ namespace PackageManager.Model
                     case TargetFolderOptions.ROOT:
                         TargetFolder = "%AP_ROOT%";
                         break;
+                    case TargetFolderOptions.PROGRAMDATA:
+                        TargetFolder = @"c:\programdata\";
+                        break;
                     case TargetFolderOptions.Other_Folder:
                         TargetFolder = @"c:\";
                         break;
@@ -66,6 +69,10 @@ namespace PackageManager.Model
             else if (folder.TargetFolder == "%AP_ROOT%")
             {
                 this.SelectedTargetFolderOption = TargetFolderOptions.ROOT;
+            }
+            else if (folder.TargetFolder.ToLower() == @"c:\programdata\")
+            {
+                this.SelectedTargetFolderOption = TargetFolderOptions.PROGRAMDATA;
             }
             else
             {
