@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight" MinWidth="300"
-        Icon="/PackageManager;component/Resources/Images/parker.ico">
+        Icon="/PackageManager;component/Resources/NonEmbedded/parker.ico">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition />
