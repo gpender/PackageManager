@@ -73,7 +73,7 @@ namespace PackageManager.ViewModels
             {          
                 try
                 {
-                    return packageManager.Package == null ? null : packageManager.Package.Components.Component.Items.File.Where(g => ((g.Path.Contains("Install") || g.Path.StartsWith("+") || g.Path.Contains("Template") || g.TargetFolder.Contains("Template")))).OrderBy(ob => ob.Path).ToArray();
+                    return packageManager.Package.Components.Component.Items.File == null ? null : packageManager.Package.Components.Component.Items.File.Where(g => ((g.Path.Contains("Install") || g.Path.StartsWith("+") || g.Path.Contains("Template") || g.TargetFolder.Contains("Template")))).OrderBy(ob => ob.Path).ToArray();
                 }
                 catch { }
                 return null;   
@@ -86,7 +86,7 @@ namespace PackageManager.ViewModels
             {
                 try
                 {
-                    return packageManager.Package == null ? null : packageManager.Package.Components.Component.Items.File.Where(g => !((g.Path.Contains("Install") || g.Path.Contains("+") || g.Path.Contains("Template") || g.TargetFolder.Contains("Template")))).ToArray();
+                    return packageManager.Package.Components.Component.Items.File == null ? null : packageManager.Package.Components.Component.Items.File.Where(g => !((g.Path.Contains("Install") || g.Path.Contains("+") || g.Path.Contains("Template") || g.TargetFolder.Contains("Template")))).ToArray();
                 }
                 catch { }
                 return null;
@@ -98,7 +98,7 @@ namespace PackageManager.ViewModels
             {
                 try
                 {
-                    return packageManager.Package == null ? null : packageManager.Package.Components.Component.Items.Folder.ToArray();
+                    return packageManager.Package.Components.Component.Items.Folder == null ? null : packageManager.Package.Components.Component.Items.Folder.ToArray();
                 }
                 catch { }
                 return null;

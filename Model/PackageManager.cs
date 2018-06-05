@@ -323,7 +323,7 @@ namespace PackageManager.Model
             {
                 if (Directory.Exists(tmpPath))
                 {
-                    Directory.Delete(tmpPath, true);
+                    DeleteDirectory(tmpPath);
                 }
                 Directory.CreateDirectory(tmpPath);
                 Directory.CreateDirectory(tmpPath + @"\Icon");
@@ -412,7 +412,7 @@ namespace PackageManager.Model
             }
             if (Directory.Exists(userItem.Path))
             {
-                Directory.Delete(userItem.Path, true);
+                DeleteDirectory(userItem.Path);
             }
             userItem.ParentItemsFolder.FolderHierarchy.Clear();
             userItem.ParentItemsFolder.FolderHierarchy.Add(new UserDirectory(tmpPath + userItem.ParentItemsFolder.Path, userItem.ParentItemsFolder));
@@ -455,7 +455,7 @@ namespace PackageManager.Model
                 {
                     if (File.Exists(fileInfo.FullName))
                     {
-                        Directory.Delete(fileInfo.DirectoryName, true);
+                        DeleteDirectory(fileInfo.DirectoryName);
                     }
                 }
             }
@@ -467,7 +467,7 @@ namespace PackageManager.Model
                 }
                 if (fileInfo.Directory.EnumerateFiles().Count() == 0 && fileInfo.Directory.EnumerateDirectories().Count() == 0)
                 {
-                    fileInfo.Directory.Delete();
+                    DeleteDirectory(fileInfo.Directory.Name);
                 }
             }
         }
@@ -495,7 +495,7 @@ namespace PackageManager.Model
                 folderList.Remove(folder);
                 Package.Components.Component.Items.Folder = folderList.ToArray();
             }
-            Directory.Delete(tmpPath + @"\" + folder.Path, true);
+            DeleteDirectory(tmpPath + @"\" + folder.Path);
         }
 
         internal void EditIcon()
@@ -686,7 +686,7 @@ namespace PackageManager.Model
             FileInfo fileInfo = new FileInfo(tmpPath + @"\" + file.Path);
             if (File.Exists(fileInfo.FullName))
             {
-                Directory.Delete(fileInfo.DirectoryName, true);
+                DeleteDirectory(fileInfo.DirectoryName);
             }
         }
 
@@ -775,7 +775,7 @@ namespace PackageManager.Model
                         string path = @"Install\" + plugInProxy.Name;
                         if (Directory.Exists(tmpPath + @"\" + path))
                         {
-                            Directory.Delete(tmpPath + @"\" + path, true);
+                            DeleteDirectory(tmpPath + @"\" + path);
                         }
                         if (!Directory.Exists(tmpPath + @"\" + path))
                         {
@@ -870,7 +870,7 @@ namespace PackageManager.Model
             FileInfo fileInfo = new FileInfo(tmpPath + @"\" + file.Path);
             if (File.Exists(fileInfo.FullName))
             {
-                Directory.Delete(fileInfo.DirectoryName, true);
+                DeleteDirectory(fileInfo.DirectoryName);
             }
             if (Package.Components.Component.Items.ProfileChange != null)
             {
@@ -904,7 +904,23 @@ namespace PackageManager.Model
                 CopyDirectory(folder, dest);
             }
         }
+        public static void DeleteDirectory(string target_dir)
+        {
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
 
+            foreach (string file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+            Directory.Delete(target_dir, false);
+        }
         internal void AddHelpFile()
         {
             string helpFileFileName = null;
@@ -964,7 +980,7 @@ namespace PackageManager.Model
             File.Delete(fileInfo.FullName);
             if (fileInfo.Directory.EnumerateFiles().Count() == 0 && fileInfo.Directory.EnumerateDirectories().Count() == 0)
             {
-                Directory.Delete(fileInfo.DirectoryName, true);
+                DeleteDirectory(fileInfo.DirectoryName);
             }
         }
 
