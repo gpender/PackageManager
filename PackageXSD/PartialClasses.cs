@@ -55,21 +55,26 @@ public class UserItem
 }
 public class UserDirectory : UserItem
 {
+    public bool IsTopLevel { get; private set; }
     public ObservableCollection<UserFile> Files { get; set; } = new ObservableCollection<UserFile>();
     public ObservableCollection<UserDirectory> SubFolders { get; set; } = new ObservableCollection<UserDirectory>();
     public IEnumerable Items { get { return SubFolders?.Cast<Object>().Concat(Files); } }
 
-    public UserDirectory(string path, PackageComponentsComponentItemsFolder parentItemsFolder) : base(path,parentItemsFolder)
+    public UserDirectory(string path, PackageComponentsComponentItemsFolder parentItemsFolder, bool isTopLevel) : base(path,parentItemsFolder)
     {
+        IsTopLevel = isTopLevel;
         if (Path.Length <= 256)
         {
-            foreach (var dir in System.IO.Directory.EnumerateDirectories(Path))
+            if (System.IO.Directory.Exists(Path))
             {
-                SubFolders.Add(new UserDirectory(dir, parentItemsFolder));
-            }
-            foreach (var file in System.IO.Directory.EnumerateFiles(path))
-            {
-                Files.Add(new UserFile(file, parentItemsFolder));
+                foreach (var dir in System.IO.Directory.EnumerateDirectories(Path))
+                {
+                    SubFolders.Add(new UserDirectory(dir, parentItemsFolder,false));
+                }
+                foreach (var file in System.IO.Directory.EnumerateFiles(path))
+                {
+                    Files.Add(new UserFile(file, parentItemsFolder));
+                }
             }
         }
     }

@@ -33,7 +33,9 @@
                                                 <HierarchicalDataTemplate ItemsSource="{Binding Items}">
                                                     <StackPanel Orientation="Horizontal">
                                                         <Label Content="{Binding Name}" Background="Transparent"/>
-                                                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.DeleteSelectedFolderItemCommand}" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=IsSelected, Converter={StaticResource VisibleIfTrue}}">Delete</Button>
+                                                        <Grid Visibility="{Binding IsTopLevel,Converter={StaticResource VisibleIfNotTrue}}">
+                                                            <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.DeleteSelectedFolderItemCommand}" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=IsSelected, Converter={StaticResource VisibleIfTrue}}">Delete</Button>
+                                                        </Grid>
                                                     </StackPanel>
                                                 </HierarchicalDataTemplate>
                                             </cc_local:TreeViewEx.ItemTemplate>

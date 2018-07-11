@@ -193,7 +193,7 @@ namespace PackageManager.Model
                 {
                     foreach (var f in package.Components.Component.Items.Folder)
                     {
-                        f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path,f));
+                        f.FolderHierarchy.Add(new UserDirectory(tmpPath + f.Path,f,true));
                     }
                 }
 
@@ -415,7 +415,7 @@ namespace PackageManager.Model
                 DeleteDirectory(userItem.Path);
             }
             userItem.ParentItemsFolder.FolderHierarchy.Clear();
-            userItem.ParentItemsFolder.FolderHierarchy.Add(new UserDirectory(tmpPath + userItem.ParentItemsFolder.Path, userItem.ParentItemsFolder));
+            userItem.ParentItemsFolder.FolderHierarchy.Add(new UserDirectory(tmpPath + userItem.ParentItemsFolder.Path, userItem.ParentItemsFolder,true));
 
         }
 
@@ -545,7 +545,7 @@ namespace PackageManager.Model
                     folder = new PackageComponentsComponentItemsFolder();
                     folder.TargetFolder = folderProxy.TargetFolder;
                     folder.Path = destinationDirectoryInfo.Name;
-                    folder.FolderHierarchy.Add(new UserDirectory(tmpPath + folder.Path,folder));
+                    folder.FolderHierarchy.Add(new UserDirectory(tmpPath + folder.Path,folder,true));
                     folderList.Insert(0, folder);
                     Package.Components.Component.Items.Folder = folderList.ToArray();
                 }
