@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -338,6 +338,7 @@
     <Content Include=".gitattributes" />
     <Content Include=".gitignore" />
     <EmbeddedResource Include="Resources\Files\emptyPackage.manifest" />
+    <Content Include="lib\Core.dll" />
     <Content Include="lib\System.Windows.Controls.DataVisualization.Toolkit.Design.4.0.dll" />
     <Content Include="lib\System.Windows.Controls.DataVisualization.Toolkit.dll" />
     <Content Include="lib\System.Windows.Controls.DataVisualization.Toolkit.Expression.Design.dll" />

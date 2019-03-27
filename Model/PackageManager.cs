@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Xml.Linq;
-using _3S.CoDeSys.Core.Components;
+//using _3S.CoDeSys.Core.Components;
 using Ionic.Zip;
 using PackageManager.Serialization;
 using PackageManager.Views;
